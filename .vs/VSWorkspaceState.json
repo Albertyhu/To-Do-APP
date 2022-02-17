@@ -2,8 +2,12 @@
   "ExpandedNodes": [
     "",
     "\\dist",
-    "\\src"
+    "\\src",
+    "\\src\\asset",
+    "\\src\\components",
+    "\\src\\member",
+    "\\src\\nonmember"
   ],
-  "SelectedNode": "\\src\\index.js",
+  "SelectedNode": "\\src\\member\\Todo.js",
   "PreviewInSolutionExplorer": false
 }

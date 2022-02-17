@@ -29,7 +29,7 @@ export const handleSignIn = () => {
     var currentUser = null; 
     userInfo.email = document.getElementById('signIn_email').value;
     userInfo.password = document.getElementById('signIn_pass').value; 
-    console.log(userInfo)
+    //console.log(userInfo)
     if (checkEmail(userInfo.email) && checkPass(userInfo.password)) {
         signInWithEmailAndPassword(auth, userInfo.email, userInfo.password)
             .then((userCredential) => {
