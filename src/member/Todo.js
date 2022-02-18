@@ -7,7 +7,8 @@ export const renderToDo = () => {
             "<div id = 'center_container'>" + 
                 "<div id = 'side-panel'></div>" +
                 "<div id = 'output-panel'></div>" + 
-                "<div id= 'addProjectPanel'></div>"
+                "<div id = 'addProjectPanel'></div>" + 
+                "<div id = 'addTaskPanel'></div>" + 
             "</div>" + 
         "</div>";
 //    element.appendChild(renderSignOutButton());

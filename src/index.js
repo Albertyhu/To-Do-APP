@@ -7,7 +7,8 @@ import { renderToDo } from './member/Todo.js';
 import { getAuth, onAuthStateChanged } from 'firebase/auth'; 
 import { renderSignOutButton, handleSignOut } from './member/signOutButton.js';
 import { renderAdminPanel } from './member/adminPanel.js'; 
-import { renderAddProj } from './member/addProject.js';
+import { renderAddProj, openAddProjectPanel, closeAddProjectPanel, handleAddProject, getProjectList } from './member/addProject.js';
+import { renderAddTaskPanel, openAddTaskPanel, closeAddTaskPanel  } from './member/addTask.js'; 
 
 //for watching the html file 
 require('./home.html')
@@ -59,8 +60,21 @@ document.getElementById('side-panel').innerHTML = renderAdminPanel();
 
 
 document.getElementById('signOutButton').addEventListener('click', handleSignOut)
-
+document.getElementById('Admin_addProjectButton').addEventListener('click', openAddProjectPanel)
 
 /*code for add project panel*/
 const AddProjectPanel = document.getElementById('addProjectPanel'); 
 AddProjectPanel.innerHTML = renderAddProj();
+
+document.getElementById('CancelAddProjectButton').addEventListener('click', closeAddProjectPanel); 
+document.getElementById('addProjectButton').addEventListener('click', handleAddProject); 
+
+/*code for add task panel*/
+const addTaskPanel = document.getElementById('addTaskPanel'); 
+addTaskPanel.innerHTML = renderAddTaskPanel(); 
+
+const OpenTaskButton = document.getElementById('Admin_addTaskButton');
+OpenTaskButton.addEventListener('click', openAddTaskPanel); 
+
+
+document.getElementById('CancelAddTaskButton').addEventListener('click', closeAddTaskPanel);
