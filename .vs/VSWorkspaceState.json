@@ -5,8 +5,9 @@
     "\\src",
     "\\src\\asset",
     "\\src\\components",
-    "\\src\\member"
+    "\\src\\member",
+    "\\src\\member\\display"
   ],
-  "SelectedNode": "\\src\\member\\addProject.js",
+  "SelectedNode": "\\src\\member\\addTask.js",
   "PreviewInSolutionExplorer": false
 }

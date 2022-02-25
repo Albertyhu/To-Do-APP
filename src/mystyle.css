@@ -7,6 +7,7 @@ width: 100%;
 margin-left: auto;
 margin-right: auto; 
 text-align: center;
+text-align: center;
 }
 
 #signIn, #signUp, #mainPages {
@@ -155,9 +156,9 @@ display: none;
 /*Add Project Panel*/
 #addProjectPanel {
     position: absolute;
-    display: none; 
+    display: none;
     z-index: 1;
-    width: 60%; 
+    width: 60%;
     height: 60%;
     background-color: #ebebeb;
     border-radius: 10px;
@@ -168,7 +169,6 @@ display: none;
     margin-bottom: auto;
     margin-left: auto;
     margin-right: auto;
-
     justify-content: center;
     align-items: center;
     width: 95%;
@@ -176,7 +176,7 @@ display: none;
     text-align: center;
 }
 
-#add_projectTitle, #add_taskName {
+#add_projectTitle, #add_taskName, #add_taskName-SEC {
     width: 85%;
     text-align: center;
     font-family: Verdana;
@@ -207,7 +207,9 @@ display: none;
     padding: 5px;
 }
 
-#project_deadline_input input, #task_deadlineInput, #addTask_urgency, #addTask_status {
+#project_deadline_input input, #task_deadlineInput,
+#addTask_urgency, #addTask_status, #AddTask_ProjectCategory_Selection,
+#addTask_status-SEC, #addTask_urgency-SEC, #task_deadlineInput-SEC {
     font-family: inherit;
     padding: 5px;
 }
@@ -218,7 +220,7 @@ display: none;
     margin-right: auto;
 }
 
-#addProjectButton, #addTaskButton {
+#addProjectButton, #addTaskButton, #addTaskButton-SEC, #displayTask_editButton, #displayTask_delButton, #displayTask_closeButton {
     border: none;
     font-family: Verdana;
     font-weight: bold;
@@ -228,16 +230,25 @@ display: none;
     padding-left: 50px;
     padding-right: 50px;
     color: #ffffff;
+    cursor: pointer;
 }
 
-#addProjectButton:active, #CancelAddProjectButton:active, #CancelAddTaskButton:active, #addTaskButton:active {
-    border: 2px solid #000000;
-    background-color: #ebebeb;
-    font-size: 20px;
-    color: #000000;
-}
+#addProjectButton:active,
+#CancelAddProjectButton:active,
+#CancelAddTaskButton:active,
+#addTaskButton:active,
+#addTaskButton-SEC:active,
+#CancelAddTaskButton-SEC:active,
+#displayTask_editButton:active,
+#displayTask_delButton:active,
+#displayTask_closeButton:active {
+        border: 2px solid #000000;
+        background-color: #ebebeb;
+        font-size: 20px;
+        color: #000000;
+    }
 
-#CancelAddProjectButton, #CancelAddTaskButton {
+#CancelAddProjectButton, #CancelAddTaskButton, #CancelAddTaskButton-SEC {
     background-color: #333333;
     font-size: 20px;
     color: #ffffff;
@@ -260,19 +271,202 @@ display: none;
 
 #addTaskPanel {
     position: absolute;
-    display: inline-block;
+    display: none;
     z-index: 1;
     width: 60%;
-
     background-color: #ebebeb;
     border-radius: 10px;
 }
 
-#addTask_description {
+#addTask_description, #addTask_description-SEC {
     width: 85%;
     text-align: left;
     font-family: Verdana;
     border-radius: 10px;
     height: 30px;
     padding: 5px;
+}
+
+ #SecondaryAddTaskPanel {
+    position: absolute;
+    display: none;
+    z-index: 1;
+    width: 60%;
+    background-color: #ebebeb;
+    border-radius: 10px;   
+}
+
+#SecAddTask_ProjectTitle {
+    font-weight: bold;
+    font-family: Verdana;
+    text-align: center;
+}
+
+/*Project displays*/
+#displayContainer {
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    height: 100%;
+    text-align: center;
+    /* border: 1px solid #000;*/
+}
+
+#displayProjectCon {
+    display: inline-block;
+    height: 100%;
+
+}
+
+#displayProjectsContent, #displayTodayContent, #displayWeekContent, #displayMonthContent {
+    display: inline-block;
+    overflow-y: scroll;
+    max-height: 85%;
+    overflow-x: hidden;
+}
+
+#displayTodayCon, #displayWeekCon, #displayMonthCon, #displaySingleProject, #displaySingleTask {
+    display: none;
+    overflow-y: scroll;
+}
+
+#projectItemContainer {
+    display: grid;
+    grid-template-columns: 10fr 1fr;
+}
+
+#projectTitleButton {
+    border: none;
+    background-color: #ccc;
+    font-family: Verdana;
+    color: #fff;
+    width: 100%;
+    font-size: 20px;
+    margin-top: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    cursor: pointer;
+    outline: none;
+    display: inline-block;
+}
+
+#projectTitleButton:active {
+    background-color: #333;
+}
+
+#projectTitleButton ul {
+    padding-left: 0;
+    list-style-type: none;
+}
+
+#trashIcon {
+    margin: auto;
+    width: 25px;
+    height: 25px;
+    padding-left: 5px;
+    padding-right: 5px;
+    display: none;
+    cursor: pointer;
+}
+
+#trashIcon:hover {
+    color: #969696;
+    width: 27px;
+    height: 27px;
+}
+
+#trashContainer {
+    display: flex;
+    justify-content: center;
+    width: 30px;
+    max-width: 30px;
+}
+
+#projectPage {
+    display: none;
+}
+
+#AllProjectTasks {
+    padding: 0 18px;
+    max-height: 0;
+    overflow: hidden;
+    text-align: left;
+    transition: max-height .4s ease-out;
+    background-color: #fff;
+    color: #000;
+    border: none;
+}
+
+.taskListItem {
+    list-style: none;
+    background-color: #e6e6e6;
+    text-align: left;
+    margin-top: 5px;
+    cursor: pointer;
+
+}
+
+.taskListItem span {
+    padding-left: 5px;
+    width: 87%;
+    display: inline-block; 
+}
+
+.addTaskListItem {
+    list-style: none;
+    background-color: #e6e6e6;
+    text-align: center;
+    margin-top: 5px;
+    color: #333;
+    cursor: pointer;
+}
+
+.addTaskListItem, .taskListItem {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+
+    .addTaskListItem:hover, .taskListItem:hover {
+        background-color: #989898;
+    }
+
+#add_icon {
+width: 15px; 
+height: 15px;
+padding-right: 5px;
+}
+
+/* display task panel*/
+
+
+#displayTaskPanel {
+    position: absolute;
+    display: none;
+    z-index: 1;
+    width: 60%;
+    background-color: #ebebeb;
+    border-radius: 10px;
+}
+
+
+#displayTask_buttonCont {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-around; 
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#displayTask_cont1, #displayTask_cont2 {
+    display: flex;
+    justify-content: space-around;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
 }

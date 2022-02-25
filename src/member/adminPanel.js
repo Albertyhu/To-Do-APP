@@ -1,26 +1,12 @@
-/*
-export const renderAdminPanel = () => {
-    const element = "<table id = 'adminPanel'>" +
-        "<tr><th></th></tr>" + 
-        "<tr><td>Add task</td></td>" + 
-        "<tr><td>Yesterday</td></td>" + 
-        "<tr><td>Today</td></td>" + 
-        "<tr><td>Week</td></td>" + 
-        "<tr><td>Month</td></td>" + 
-        "<tr><td>Sign Out</td></td>" + 
-        "<tr><td></td></td>" + 
-        "</table>"
-
-    return element; 
-}*/
+import { displayProjects, displayToday, displayWeek, displayMonth } from './display/toggleDisplay.js'; 
 
 export const renderAdminPanel = () => {
     const element = "<div id = 'adminPanelContainer'><ul id = 'adminPanel'>" +
         "<li id = 'admin-title'>View</li>" +
-        "<li><button class = 'admin-options' id = ''>Projects</button></li>" +
-        "<li><button class = 'admin-options' id = ''>Today</button></li>" +
-        "<li><button class = 'admin-options' id = ''>Week</button></li>" +
-        "<li><button class = 'admin-options' id = ''>Month</button></li>" +
+        "<li><button class = 'admin-options' id = 'adminProjectButton'>Projects</button></li>" +
+        "<li><button class = 'admin-options' id = 'adminTodayButton'>Today</button></li>" +
+        "<li><button class = 'admin-options' id = 'adminWeekButton'>Week</button></li>" +
+        "<li><button class = 'admin-options' id = 'adminMonthButton'>Month</button></li>" +
         "<li id = 'admin-title'>Actions</li>" +
         "<li><button class = 'admin-options' id = 'Admin_addProjectButton'>Add Project</button></li>" +
         "<li><button class = 'admin-options' id = 'Admin_addTaskButton'>Add task</button></li>" +

@@ -4,6 +4,9 @@ import { doc, setDoc, collection, query, where, Timestamp, getDoc, getDocs } fro
 import { db } from '../initializeFirebase.js';
 import { formatDistance, subDays } from 'date-fns'; 
 import { generateCode } from '../components/randGen.js'; 
+import { fillProjectList, retrieveProjectList } from '../getProjectList.js'; 
+import { addProjectToProjectDisplay } from './display/displayProject.js';
+import { addProjectToSelection } from './addTask.js';
 
 const auth = getAuth(); 
 
@@ -113,6 +116,10 @@ export const handleAddProject = async () => {
                 status: projectInfo.status,
                 deadline: Timestamp.fromDate(deadline_date),
             }).then(snap => {
+                addProjectToProjectDisplay(projectInfo.title, codeID);
+                addProjectToSelection(projectInfo.title, codeID);
+                fillProjectList();
+
                 closeWindow = true; 
 
             })
