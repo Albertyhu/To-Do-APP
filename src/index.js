@@ -24,6 +24,7 @@ import { displayProjects, displayToday, displayWeek, displayMonth } from './memb
 import { renderProjects } from './member/display/displayProject.js';
 import { AddFuncToSecButtons } from './member/renderSecAddTaskButtons.js';
 import { renderTaskPanel } from './member/display/displayTask/renderTaskPanel.js';
+import { closeDisplayTask, loadDisplayTaskDom } from './member/display/displayTask/displayTaskLogic.js';
 
 //for watching the html file 
 require('./home.html')
@@ -42,6 +43,33 @@ signUpPage.innerHTML = renderSignUpPage();
 //signInPage.appendChild(renderSignOutButton());
 mainPages.appendChild(renderToDo());
 
+//render DOM 
+
+/*code for admin panel of the main pages*/
+document.getElementById('side-panel').innerHTML = renderAdminPanel()
+
+/*code for add project panel*/
+const AddProjectPanel = document.getElementById('addProjectPanel');
+AddProjectPanel.innerHTML = renderAddProj();
+
+/*code for add task panel*/
+const addTaskPanel = document.getElementById('addTaskPanel');
+addTaskPanel.innerHTML = renderAddTaskPanel();
+
+
+//code for Secondary Add Task Panel 
+const SecAddTaskPanel = document.getElementById('SecondaryAddTaskPanel');
+SecAddTaskPanel.innerHTML = renderSecAddTaskPanel(); 
+
+//renders the panel that displays individual task details
+const displayTask = document.getElementById('displayTaskPanel');
+displayTask.innerHTML = renderTaskPanel();
+
+//render the Display Task Panel that shows the user the individual task of a project
+const displayTaskPanel = document.getElementById('displayTaskPanel');
+//displayTaskPanel.appendChild(renderTaskPanel());
+//loadDisplayTaskDom(); 
+
 export const mainApp = (function () {
     onAuthStateChanged(auth, (user) => {
         if (!user) {
@@ -55,38 +83,31 @@ export const mainApp = (function () {
             signUpPage.style.display = 'none';
             mainPages.style.display = 'inline-block';
             fillProjectList();
-            /*code for admin panel of the main pages*/
-            document.getElementById('side-panel').innerHTML = renderAdminPanel()
 
-        /**admin panel */
+
+              /**admin panel */
             document.getElementById('signOutButton').addEventListener('click', handleSignOut)
             document.getElementById('Admin_addProjectButton').addEventListener('click', openAddProjectPanel)
 
-            /*code for add project panel*/
-            const AddProjectPanel = document.getElementById('addProjectPanel');
-            AddProjectPanel.innerHTML = renderAddProj();
+
 
             document.getElementById('CancelAddProjectButton').addEventListener('click', closeAddProjectPanel);
             document.getElementById('addProjectButton').addEventListener('click', handleAddProject);
 
-            /*code for add task panel*/
-        
-            const addTaskPanel = document.getElementById('addTaskPanel');
-            addTaskPanel.innerHTML = renderAddTaskPanel();
+
 
             const OpenTaskButton = document.getElementById('Admin_addTaskButton');
-            OpenTaskButton.addEventListener('click', openAddTaskPanel);
+            //OpenTaskButton.addEventListener('click', openAddTaskPanel);
 
             const AddTaskButton = document.getElementById('addTaskButton'); 
-            AddTaskButton.addEventListener('click', handleAddTask)
+            //AddTaskButton.addEventListener('click', handleAddTask)
 
             document.getElementById('CancelAddTaskButton').addEventListener('click', closeAddTaskPanel);
 
-            //code for Secondary Add Task Panel 
-            const SecAddTaskPanel = document.getElementById('SecondaryAddTaskPanel');
-            SecAddTaskPanel.innerHTML = renderSecAddTaskPanel(); 
-            AddFuncToSecButtons();
-           
+            //display task panel
+            //const displayTask_closeButt = document.getElementById('displayTask_closeButton');
+            //displayTask_closeButt.addEventListener('click', closeDisplayTask); 
+
             //renders the 'select' tag element of the Add Task Panel under Assign Project Category
             (async function () { document.getElementById('AssignProject').appendChild(await renderProjectCategory()) })();
 
@@ -96,12 +117,12 @@ export const mainApp = (function () {
             document.getElementById('adminTodayButton').addEventListener('click', displayToday);
             document.getElementById('adminWeekButton').addEventListener('click', displayWeek);
             document.getElementById('adminMonthButton').addEventListener('click', displayMonth);
+
+
+            OpenTaskButton.addEventListener('click', openAddTaskPanel);
+            AddTaskButton.addEventListener('click', handleAddTask)
+            AddFuncToSecButtons();
             renderProjects();
-
-            //render the Display Task Panel that shows the user the individual task of a project
-            const displayTaskPanel = document.getElementById('displayTaskPanel'); 
-            displayTaskPanel.innerHTML = renderTaskPanel(); 
-
         }
     })
 })();

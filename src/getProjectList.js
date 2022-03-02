@@ -1,9 +1,12 @@
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { getFirestore, doc, setDoc, collection, query, where, Timestamp, getDoc, getDocs, deleteDoc, orderBy, onSnapshot} from "firebase/firestore";
+import { getFirestore, doc, setDoc, collection, query, where, Timestamp, getDoc, getDocs, deleteDoc, orderBy, onSnapshot, updateDoc} from "firebase/firestore";
 import { db } from './initializeFirebase.js';
 import { renderProjects } from './member/display/displayProject.js'; 
 
 const auth = getAuth();
+export const returnAuth = () => {
+    return auth;
+}
 
 var ProjectList = [];
 var ProjectNamesList = []; 
@@ -63,8 +66,21 @@ export const getTaskListByProjectID = async (projectID) => {
         })
         */
         data.forEach(snap => {
-            if(snap.exists())
-                arr.push(snap.data())
+            if (snap.exists()) {
+                // arr.push(snap.data())
+                const obj = {
+                    id: snap.id,
+                    ProjectID: snap.data().ProjectID,
+                    deadline: snap.data().deadline,
+                    description: snap.data().description,
+                    status: snap.data().status,
+                    title: snap.data().title,
+                    urgency: snap.data().urgency,
+                    dateCreated: snap.data().dateCreated,
+                    isFinished: snap.data().isFinished,
+                }
+                arr.push(obj);
+            }
         })
 
 
@@ -101,6 +117,20 @@ export const delProject = async (ID) => {
         .catch(e => {
             console.log(e.code + ": " + e.message); 
         })
+}
 
-
+export const toggleCheckBox = async (taskID, boolValue) => {
+    const docRef = doc(db, 'task', auth.currentUser.uid, 'TaskList', taskID)
+    if (boolValue) {
+        await updateDoc(docRef, {
+            isFinished: true,
+            status: 'Done',
+        })
+    }
+    else {
+        await updateDoc(docRef, {
+            isFinished: false,
+            status: 'Ongoing',
+        })
+    }
 }

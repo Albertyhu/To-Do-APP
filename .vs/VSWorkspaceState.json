@@ -6,8 +6,10 @@
     "\\src\\asset",
     "\\src\\components",
     "\\src\\member",
-    "\\src\\member\\display"
+    "\\src\\member\\display",
+    "\\src\\member\\display\\displayTask",
+    "\\src\\nonmember"
   ],
-  "SelectedNode": "\\src\\member\\addTask.js",
+  "SelectedNode": "\\src\\member\\display\\displayTask\\renderTaskPanel.js",
   "PreviewInSolutionExplorer": false
 }

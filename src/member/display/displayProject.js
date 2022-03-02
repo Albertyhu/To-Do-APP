@@ -1,10 +1,12 @@
-import { retrieveProjectNamesList, getTaskListByProjectID, delProject } from '../../getProjectList.js'; 
+import { retrieveProjectNamesList, getTaskListByProjectID, delProject, toggleCheckBox  } from '../../getProjectList.js'; 
 import { getAuth } from 'firebase/auth'
-import { doc, setDoc, collection, query, where, Timestamp, getDoc, getDocs, orderBy} from 'firebase/firestore';
+import { doc, deleteDoc, setDoc, collection, query, where, Timestamp, getDoc, getDocs, orderBy} from 'firebase/firestore';
 import { db } from '../../initializeFirebase.js';
 import trashIcon from '../../asset/trash.png'; 
 import addIcon from '../../asset/add.png';
 import { openAddTaskPanelwithProjectID, openAddTaskPanel, openSecAddTaskPanel  } from '../addTask.js'; 
+import { openDisplayTask, closeDisplayTask } from './displayTask/displayTaskLogic.js'; 
+import { renderTaskPanel, fillTaskInfo, close_DisplayTask } from './displayTask/renderTaskPanel.js';
 
 const list = []; 
 
@@ -26,6 +28,8 @@ export const fillProjectList = async () => {
 export const renderProjects = async () => {
     const displayCont = document.getElementById('displayProjectsContent'); 
     await fillProjectList();
+    const displayTaskPanel = document.getElementById('displayTaskPanel'); 
+
   //  const list = await retrieveProjectNamesList(); 
     for (var i = 0; i < list.length; i++){
         //create container
@@ -52,9 +56,8 @@ export const renderProjects = async () => {
         trashContainer.appendChild(delButton)
         delButton.addEventListener('click', function () {
             handleDelProject(Project_title, Project_id)
-           // delProject(Project_id);
-           // renderProjects();
         });
+
         //create a mouseover event for the container for the trash icon to appear 
         container.addEventListener('mouseover', function () {
             delButton.style.display = 'block';
@@ -75,15 +78,39 @@ export const renderProjects = async () => {
         if (tasks.length !== 0) {
             tasks.forEach(val => {           
                 const listItem = document.createElement('li');
+
+                //Add checkbox for each task in the display list
                 const check = document.createElement('INPUT'); 
                 check.setAttribute("type", "checkbox")
                 check.setAttribute('class', 'task_checkbox'); 
+                check.checked = val.isFinished; 
+                check.addEventListener('change', function () {
+                    //pass  the id and boolean value of the check box to toggleCheckBox so that the value in firebase reflects true value 
+                    toggleCheckBox(val.id, this.checked);
+                })
+
                 listItem.appendChild(check);
                 const listText = document.createElement('span');
+                listText.setAttribute('id', 'displayTaskLink'); 
+                const TaskID = val.id; 
+                const taskTitle = val.title; 
+                const taskDescription = val.description; 
+                const taskUrgency = val.urgency; 
+                const taskDeadline = val.deadline; 
+                const taskStatus = val.status; 
+                const taskDateCreated = val.dateCreated; 
+
+                listText.addEventListener('click', () => {
+                    fillTaskInfo(taskTitle, taskDescription, taskUrgency, taskDeadline, taskStatus, taskDateCreated, Project_id, TaskID, check.checked)
+                    renderTaskPanel(Project_title, TaskID); 
+                    displayTaskPanel.style.display = 'inline-block'
+                });
                 listText.innerHTML = val.title; 
                 listItem.appendChild(listText);
                 listItem.setAttribute('class', 'taskListItem'); 
+                listItem.setAttribute('id', TaskID)
                 listElement.appendChild(listItem)
+
             })
         }
 
@@ -99,7 +126,7 @@ export const renderProjects = async () => {
         addTaskPrompt.innerHTML = 'Add Task'; 
         addTaskPrompt.style.display = 'inline-block';
         addTaskElement.appendChild(addTaskPrompt); 
-        addTaskElement.setAttribute('class', 'addTaskListItem ')
+        addTaskElement.setAttribute('class', 'addTaskListItem')
         addTaskElement.setAttribute('id', 'addTaskListItem')
 
         //add function for Add Task 
@@ -204,8 +231,10 @@ export const addTaskToProjectDisplay = (ProjectID, TaskID, title) => {
     check.setAttribute('class', 'task_checkbox');
     listItem.appendChild(check);
     const listText = document.createElement('span')
+    listText.setAttribute('id', 'displayTaskLink');
     listText.innerHTML = title;
     listItem.appendChild(listText);
+    listItem.setAttribute('id', TaskID)
     listItem.setAttribute('class', 'taskListItem');
     listElement.insertBefore(listItem, listElement.lastChild)
     const panel = listItem.parentNode.parentNode;
@@ -220,4 +249,25 @@ const handleDelProject = async (title, ID) => {
     else {
 
     }
+}
+
+//This is the code for deleting a task for the delete button on  the Display Task panel
+//I have to write the code here and not on renderTaskPanel.js because that file is executed before authentication 
+export const deleteTask = async (TaskID) => {
+    const displayTaskPanel = document.getElementById('displayTaskPanel'); 
+    await deleteDoc(doc(db, 'task', auth.currentUser.uid, 'TaskList', TaskID))
+        .then(
+
+            alert('Task was successfully deleted.')
+        )
+        .catch(e => {
+            console.log(e.code + ': ' + e.message)
+        })
+    const item = document.getElementsByClassName('taskListItem');
+    for (var i = 0; i < item.length; i++) {
+        if (item[i].getAttribute('id') === TaskID) {
+            item[i].remove();
+        }
+    }
+    close_DisplayTask(); 
 }

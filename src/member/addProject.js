@@ -139,3 +139,4 @@ export const handleAddProject = async () => {
     if(closeWindow)
          closeAddProjectPanel();
 }
+

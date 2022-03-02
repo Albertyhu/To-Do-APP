@@ -36,6 +36,7 @@ export const renderToDo = () => {
                 "<div id = 'displayTaskPanel'></div>" + 
             "</div>" + 
         "</div>";
+        "<span id = 'empty'></span>"
 //    element.appendChild(renderSignOutButton());
     return element; 
 }

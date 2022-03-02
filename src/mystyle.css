@@ -411,10 +411,10 @@ display: none;
 
 }
 
-.taskListItem span {
+#displayTaskLink {
     padding-left: 5px;
     width: 87%;
-    display: inline-block; 
+    display: inline-block;
 }
 
 .addTaskListItem {
@@ -430,11 +430,9 @@ display: none;
     padding-top: 5px;
     padding-bottom: 5px;
 }
-
-
-    .addTaskListItem:hover, .taskListItem:hover {
-        background-color: #989898;
-    }
+.addTaskListItem:hover, .taskListItem:hover {
+    background-color: #989898;
+}
 
 #add_icon {
 width: 15px; 
@@ -443,8 +441,6 @@ padding-right: 5px;
 }
 
 /* display task panel*/
-
-
 #displayTaskPanel {
     position: absolute;
     display: none;
@@ -453,7 +449,6 @@ padding-right: 5px;
     background-color: #ebebeb;
     border-radius: 10px;
 }
-
 
 #displayTask_buttonCont {
     margin-bottom: 20px;
