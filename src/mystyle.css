@@ -465,3 +465,68 @@ padding-right: 5px;
     margin-right: auto;
     margin-bottom: 20px;
 }
+
+/*CSS for Edit Fields */
+
+/*universal*/
+.SubZone {
+    min-width:60%;
+}
+
+#statusSubZone {
+    display: inline-block;
+    text-align: right;
+}
+
+.displayTask_editInput {
+    width: 50%;
+   /* position: absolute; */
+    height: 30px;
+ 
+}
+
+#EditButtZone {
+    display: inline-block;
+    width: 25%;
+    margin-left: 10px;
+    justify-content: space-between; 
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+#displayTask_statusInput {
+    display: none;
+    position: inherit;
+    max-width: 150px;
+}
+/*styling for the edit button*/
+#statusEditButton {
+    max-width: 100%;
+    max-height: 100%;
+    cursor: pointer;
+}
+
+.displayTask_button {
+    display: none; 
+    width: 25px; 
+    height: 25px;
+    cursor: pointer; 
+    border: 1px solid #000000;
+    border-radius: 5px; 
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+#displayTask_status {
+    position: inherit;
+}
+
+.displayTask_button:active {
+    background-color: #ccc;
+}
+
+.displayTask_subCont {
+    min-width: 350px;
+}

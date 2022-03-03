@@ -1,5 +1,10 @@
 import { closeDisplayTask, loadDisplayTaskDom } from './displayTaskLogic.js';
 import { deleteTask } from '../displayProject.js';
+import EditIcon from '../../../asset/Edit.png'; 
+import SubmitIcon from '../../../asset/check.png'; 
+import CancelIcon from '../../../asset/cancel.png'; 
+import { toggleStatusEdit } from './displayTaskButton.js'; 
+import { editStatus } from './editFunctions.js'; 
 
 var initTaskInfo = {
     title: '',
@@ -54,7 +59,7 @@ export const close_DisplayTask = () => {
     if (taskInfo.description != '')
         document.getElementById('displayTask_description').innnerHTML = '';
 
-    document.getElementById('displayTask_urgency').innerHTML = '';
+    document.getElementById('displayTask_status').innerHTML = '';
 
     document.getElementById('displayTask_deadline').innnerHTML = '';
 
@@ -108,14 +113,93 @@ export const renderTaskPanel = async (ProjTitle, ID) => {
     container1.setAttribute('id', 'displayTask_cont1');
 
     const container1_div1 = document.createElement('div');
+    container1_div1.setAttribute('class', 'displayTask_subCont')
     const progressTitle = document.createElement('h4');
     progressTitle.innerHTML = 'Progress Status';
+    container1_div1.appendChild(progressTitle);
+    //create the zone that contains the display div, input and the edit button 
+    //NA
+    const statusZone = document.createElement('div'); 
+    statusZone.setAttribute('id', 'statusZone'); 
+
+    //create 2nd tier zone that contains both the display div and input
+    //it's placed side by side with the status Edit Zone 
+    const statusSubZone = document.createElement('div'); 
+    statusSubZone.setAttribute('id', 'statusSubZone'); 
+    statusSubZone.setAttribute('class', 'SubZone')
+
+    //elements for the edit button 
+    const statusEditButtZone = document.createElement('div'); 
+    statusEditButtZone.setAttribute('id', 'EditButtZone'); 
+    const statusEditButton = document.createElement('IMG'); 
+    statusEditButton.src = EditIcon; 
+    statusEditButton.setAttribute('id', 'statusEditButton')
+    statusEditButton.style.width = '25px'; 
+    statusEditButton.style.height = '25px'; 
+    statusEditButton.style.cursor = 'pointer'; 
+
+    statusEditButtZone.appendChild(statusEditButton)
+
+    //submit and cancel Button 
+    const statusSubmit = document.createElement('IMG'); 
+    statusSubmit.src = SubmitIcon; 
+    statusSubmit.innerHTML = 'Submit'; 
+    statusSubmit.setAttribute('class', 'displayTask_button')
+    statusSubmit.setAttribute('id', 'statusSubmit')
+
+
+    //cancel button
+    const statusCancelButton = document.createElement('IMG');
+    statusCancelButton.src = CancelIcon;
+    statusCancelButton.innerHTML = 'Cancel';
+    statusCancelButton.setAttribute('class', 'displayTask_button')
+    statusCancelButton.setAttribute('id', 'statusCancelButton');
+    statusCancelButton.addEventListener('click', toggleStatusEdit);
+    statusEditButtZone.appendChild(statusSubmit);
+    statusEditButtZone.appendChild(statusCancelButton);
     const status = document.createElement('p');
     status.setAttribute('id', 'displayTask_status');
-    container1_div1.appendChild(progressTitle);
-    container1_div1.appendChild(status);
+
+    //input
+    const statusEditInput = document.createElement('SELECT');
+    statusEditInput.setAttribute('class', 'displayTask_editInput');
+    statusEditInput.setAttribute('id', 'displayTask_statusInput')
+    const ongoingOption = document.createElement('OPTION');
+    ongoingOption.innerHTML = 'Ongoing'; 
+    ongoingOption.setAttribute('value', 'Ongoing');  
+    const doneOption = document.createElement('OPTION');
+    doneOption.innerHTML = 'Done';
+    doneOption.setAttribute('value', 'Done'); 
+    const onHoldOption = document.createElement('OPTION');
+    onHoldOption.innerHTML = 'Put On Hold';
+    onHoldOption.setAttribute('value', 'Put On Hold'); 
+    statusEditInput.appendChild(ongoingOption); 
+    statusEditInput.appendChild(doneOption); 
+    statusEditInput.appendChild(onHoldOption); 
+
+    //functionality for the buttons 
+    statusEditButton.addEventListener('click', () => {
+        toggleStatusEdit();
+        statusEditInput.value = taskInfo.status;
+    }); 
+
+    statusSubmit.addEventListener('click', () => {
+        status.innerHTML = statusEditInput.value;
+        editStatus(ID)
+        toggleStatusEdit();
+    })
+
+    statusSubZone.appendChild(status); 
+    statusSubZone.appendChild(statusEditInput); 
+
+    statusZone.appendChild(statusSubZone); 
+    statusZone.appendChild(statusEditButtZone);
+    container1_div1.appendChild(statusZone);
+
+  //  container1_div1.appendChild(status);
 
     const container1_div2 = document.createElement('div');
+    container1_div2.setAttribute('class', 'displayTask_subCont')
     const deadlineTitle = document.createElement('h4');
     deadlineTitle.innerHTML = 'Deadline Date';
     const deadline = document.createElement('p');
@@ -132,14 +216,16 @@ export const renderTaskPanel = async (ProjTitle, ID) => {
     container2.setAttribute('id', 'displayTask_cont2');
 
     const container2_div1 = document.createElement('div');
+    container2_div1.setAttribute('class', 'displayTask_subCont')
     const urgencyTitle = document.createElement('h4');
     urgencyTitle.innerHTML = 'Urgency';
     const urgency = document.createElement('p');
-    status.setAttribute('id', 'displayTask_urgency');
+    urgency.setAttribute('id', 'displayTask_urgency');
     container2_div1.appendChild(urgencyTitle);
     container2_div1.appendChild(urgency);
 
     const container2_div2 = document.createElement('div');
+    container2_div2.setAttribute('class', 'displayTask_subCont')
     const dateCreatedTitle = document.createElement('h4');
     dateCreatedTitle.innerHTML = 'Date Created';
     const dateCreated = document.createElement('p');
@@ -156,18 +242,18 @@ export const renderTaskPanel = async (ProjTitle, ID) => {
     const buttCont = document.createElement('div')
     buttCont.setAttribute('id', 'displayTask_buttonCont');
 
-    const edit = document.createElement('button');
+    //const edit = document.createElement('button');
     const del = document.createElement('button');
     const close = document.createElement('button');
 
-    edit.setAttribute('id', 'displayTask_editButton')
+    //edit.setAttribute('id', 'displayTask_editButton')
     del.setAttribute('id', 'displayTask_delButton')
     close.setAttribute('id', 'displayTask_closeButton')
-    edit.innerHTML = 'Edit';
+    //edit.innerHTML = 'Edit';
     del.innerHTML = 'Delete';
     close.innerHTML = 'Close';
 
-    buttCont.appendChild(edit);
+   // buttCont.appendChild(edit);
     buttCont.appendChild(del);
     buttCont.appendChild(close);
     element.appendChild(buttCont);
