@@ -223,9 +223,16 @@ export const addProjectToProjectDisplay = (title, ID) => {
 }
 
 //function that allows other elements to add tasks to the Project Display 
-export const addTaskToProjectDisplay = (ProjectID, TaskID, title) => {
+export const addTaskToProjectDisplay = async (ProjectID, TaskID, title, description, urgency, status, deadline, date_created, isComplete) => {
+    var ProjectTitle = ''; 
+    const q = query(doc(db, 'project', auth.currentUser.uid, 'ProjectList', ProjectID))
+    const snapshot = await getDoc(q).then(item => {
+        ProjectTitle = item.data().title;
+    })
+
     const listElement = document.getElementById(ProjectID); 
     const listItem = document.createElement('li');
+    const displayTaskPanel = document.getElementById('displayTaskPanel'); 
     const check = document.createElement('INPUT');
     check.setAttribute("type", "checkbox")
     check.setAttribute('class', 'task_checkbox');
@@ -233,6 +240,12 @@ export const addTaskToProjectDisplay = (ProjectID, TaskID, title) => {
     const listText = document.createElement('span')
     listText.setAttribute('id', 'displayTaskLink');
     listText.innerHTML = title;
+
+    listText.addEventListener('click', () => {
+        fillTaskInfo(title, description, urgency, deadline, status, date_created, ProjectID, TaskID, false)
+        renderTaskPanel(ProjectTitle, TaskID);
+        displayTaskPanel.style.display = 'inline-block'
+    });
     listItem.appendChild(listText);
     listItem.setAttribute('id', TaskID)
     listItem.setAttribute('class', 'taskListItem');

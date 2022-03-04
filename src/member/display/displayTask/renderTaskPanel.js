@@ -3,8 +3,8 @@ import { deleteTask } from '../displayProject.js';
 import EditIcon from '../../../asset/Edit.png'; 
 import SubmitIcon from '../../../asset/check.png'; 
 import CancelIcon from '../../../asset/cancel.png'; 
-import { toggleStatusEdit } from './displayTaskButton.js'; 
-import { editStatus } from './editFunctions.js'; 
+import { toggleStatusEdit, toggleDescriptionEdit, toggleDeadlineEdit, toggleUrgencyEdit } from './displayTaskButton.js'; 
+import { editStatus, editDescription, editDeadline, editUrgency } from './editFunctions.js'; 
 
 var initTaskInfo = {
     title: '',
@@ -30,6 +30,10 @@ var taskInfo = {
 }
 
 export const fillTaskInfo = (title, description, urgency, deadline, status, dateCreated, projectID, ID, taskIsDone) => {
+    console.log('deadline= ' + deadline)
+    console.log('urgency= ' + urgency)
+    console.log('date created= ' + dateCreated);
+
     taskInfo.title = title;
     taskInfo.description = description;
     taskInfo.urgency = urgency;
@@ -96,15 +100,81 @@ export const renderTaskPanel = async (ProjTitle, ID) => {
     projectTitle.style.display = 'inline-block';
     element.appendChild(projectTitle);
 
-    //description
+    //render description 
     const descriptionCont = document.createElement('div');
     descriptionCont.setAttribute('id', 'description_container');
     const descriptionTitle = document.createElement('h4');
     descriptionTitle.innerHTML = 'Description';
+
+    const descriptionZone = document.createElement('div'); 
+    descriptionZone.setAttribute('id', 'descriptionZone');
+    //contains the description 
+    const descriptionSubZone = document.createElement('div'); 
+    descriptionSubZone.setAttribute('id', 'descriptionSubZone'); 
+
+    //displays description
     const description = document.createElement('p');
     description.setAttribute('id', 'displayTask_description');
+
+    //user iput
+    const descriptionInput = document.createElement('INPUT')
+    descriptionInput.setAttribute("type", "TEXTAREA");
+    descriptionInput.setAttribute("id", "displayTask_descriptionInput");
+
+    //elements for the edit button 
+    const descriptionEditButtZone = document.createElement('div');
+    descriptionEditButtZone.setAttribute('id', 'DescriptionEditButtZone');
+
+    const descriptionEditButton = document.createElement('IMG');
+    descriptionEditButton.src = EditIcon;
+    descriptionEditButton.setAttribute('class', 'displayTask_EditButton')
+    descriptionEditButton.setAttribute('id', 'descriptionEditButton')
+    descriptionEditButton.style.width = '25px';
+    descriptionEditButton.style.height = '25px';
+    descriptionEditButton.style.cursor = 'pointer';
+
+    descriptionEditButtZone.appendChild(descriptionEditButton)
+
+    //submit and cancel Button 
+    const descriptionSubmit = document.createElement('IMG');
+    descriptionSubmit.src = SubmitIcon;
+    descriptionSubmit.innerHTML = 'Submit';
+    descriptionSubmit.setAttribute('class', 'displayTask_button')
+    descriptionSubmit.setAttribute('id', 'descriptionSubmit')
+
+    //cancel button
+    const descriptionCancelButton = document.createElement('IMG');
+    descriptionCancelButton.src = CancelIcon;
+    descriptionCancelButton.innerHTML = 'Cancel';
+    descriptionCancelButton.setAttribute('class', 'displayTask_button')
+    descriptionCancelButton.setAttribute('id', 'descriptionCancelButton');
+    descriptionEditButtZone.appendChild(descriptionSubmit);
+    descriptionEditButtZone.appendChild(descriptionCancelButton);
+
+    //append elements 
     descriptionCont.appendChild(descriptionTitle);
-    descriptionCont.appendChild(description);
+    descriptionCont.appendChild(descriptionZone)
+    descriptionZone.appendChild(descriptionSubZone)
+    descriptionSubZone.appendChild(description)
+    descriptionSubZone.appendChild(descriptionInput)
+    descriptionZone.appendChild(descriptionEditButtZone)
+
+    //functionality for the buttons 
+    descriptionEditButton.addEventListener('click', () => {
+        toggleDescriptionEdit();
+        descriptionInput.value = taskInfo.description;
+    });
+
+    descriptionSubmit.addEventListener('click', () => {
+        description.innerHTML = descriptionInput.value;
+        editDescription(ID)
+        toggleDescriptionEdit();
+    })
+    descriptionCancelButton.addEventListener('click', toggleDescriptionEdit);
+    //end of description 
+
+
+   // descriptionCont.appendChild(description);
     if (taskInfo.description != '')
         element.appendChild(descriptionCont);
 
@@ -200,12 +270,80 @@ export const renderTaskPanel = async (ProjTitle, ID) => {
 
     const container1_div2 = document.createElement('div');
     container1_div2.setAttribute('class', 'displayTask_subCont')
+
+    //render Deadline 
+    //contains deadline, user input and edit buttons 
+    const deadlineZone = document.createElement('div')
+    deadlineZone.setAttribute('id', 'deadlineZone'); 
+
+
+    //contains the deadline and  user input
+    const deadlineSubZone = document.createElement('div');
+    deadlineSubZone.setAttribute('id', 'deadlineSubZone'); 
     const deadlineTitle = document.createElement('h4');
     deadlineTitle.innerHTML = 'Deadline Date';
+
     const deadline = document.createElement('p');
     deadline.setAttribute('id', 'displayTask_deadline');
+
+    //user iput
+    const deadlineInput = document.createElement('INPUT')
+    deadlineInput.setAttribute("type", "date");
+    deadlineInput.setAttribute("id", "displayTask_deadlineInput");
+
+    //elements for the edit button 
+    const deadlineEditButtZone = document.createElement('div');
+    deadlineEditButtZone.setAttribute('id', 'deadlineEditButtZone');
+
+    const deadlineEditButton = document.createElement('IMG');
+    deadlineEditButton.src = EditIcon;
+    deadlineEditButton.setAttribute('class', 'displayTask_EditButton')
+    deadlineEditButton.setAttribute('id', 'deadlineEditButton')
+    deadlineEditButton.style.width = '25px';
+    deadlineEditButton.style.height = '25px';
+    deadlineEditButton.style.cursor = 'pointer';
+
+    deadlineEditButtZone.appendChild(deadlineEditButton)
+
+    //submit and cancel Button 
+    const deadlineSubmit = document.createElement('IMG');
+    deadlineSubmit.src = SubmitIcon;
+    deadlineSubmit.innerHTML = 'Submit';
+    deadlineSubmit.setAttribute('class', 'displayTask_button')
+    deadlineSubmit.setAttribute('id', 'deadlineSubmit')
+
+    //cancel button
+    const deadlineCancelButton = document.createElement('IMG');
+    deadlineCancelButton.src = CancelIcon;
+    deadlineCancelButton.innerHTML = 'Cancel';
+    deadlineCancelButton.setAttribute('class', 'displayTask_button')
+    deadlineCancelButton.setAttribute('id', 'deadlineCancelButton');
+    deadlineEditButtZone.appendChild(deadlineSubmit);
+    deadlineEditButtZone.appendChild(deadlineCancelButton);
+
+    //append elements 
+    deadlineZone.appendChild(deadlineSubZone)
+    deadlineSubZone.appendChild(deadline)
+    deadlineSubZone.appendChild(deadlineInput)
+    deadlineZone.appendChild(deadlineEditButtZone)
     container1_div2.appendChild(deadlineTitle);
-    container1_div2.appendChild(deadline);
+    container1_div2.appendChild(deadlineZone);
+
+    //Add functionality to buttons
+    deadlineEditButton.addEventListener('click', () => {
+        toggleDeadlineEdit();
+        deadlineInput.value = taskInfo.deadline.toDate();
+    });
+
+    deadlineSubmit.addEventListener('click', () => {
+        var newDate = new Date(deadlineInput.value);
+        deadline.innerHTML = newDate.toLocaleDateString();
+        editDeadline(ID)
+        toggleDeadlineEdit();
+    })
+    deadlineCancelButton.addEventListener('click', toggleDeadlineEdit);
+
+    //end of rendering deadline 
 
     container1.appendChild(container1_div1);
     container1.appendChild(container1_div2);
@@ -217,12 +355,98 @@ export const renderTaskPanel = async (ProjTitle, ID) => {
 
     const container2_div1 = document.createElement('div');
     container2_div1.setAttribute('class', 'displayTask_subCont')
+
+    //render Urgency
+
+    //contains urgency, user input and edit buttons 
+    const urgencyZone = document.createElement('div')
+    urgencyZone.setAttribute('id', 'urgencyZone');
+
+    //contains the urgency and  user input
+    const urgencySubZone = document.createElement('div');
+    urgencySubZone.setAttribute('id', 'urgencySubZone');
+
     const urgencyTitle = document.createElement('h4');
     urgencyTitle.innerHTML = 'Urgency';
+
     const urgency = document.createElement('p');
     urgency.setAttribute('id', 'displayTask_urgency');
-    container2_div1.appendChild(urgencyTitle);
-    container2_div1.appendChild(urgency);
+
+    //user iput
+    const urgencyInput = document.createElement('SELECT')
+    urgencyInput.setAttribute("id", "displayTask_urgencyInput");
+
+    //render options 
+    const lowPriority = document.createElement('OPTION');
+    const modestPriority = document.createElement('OPTION');
+    const highPriority = document.createElement('OPTION');
+
+    lowPriority.setAttribute('id', 'lowPriority')
+    modestPriority.setAttribute('id', 'modestPriority')
+    highPriority.setAttribute('id', 'highPriority')
+
+    lowPriority.setAttribute('value', 'Low Priority'); 
+    modestPriority.setAttribute('value', 'Modest Level Priority'); 
+    highPriority.setAttribute('value', 'High Priority'); 
+
+    lowPriority.innerHTML = 'Low priority';
+    modestPriority.innerHTML = 'Modest level priority';
+    highPriority.innerHTML = 'High priority';
+
+    urgencyInput.appendChild(lowPriority);
+    urgencyInput.appendChild(modestPriority);
+    urgencyInput.appendChild(highPriority);
+
+    //elements for the edit button 
+    const urgencyEditButtZone = document.createElement('div');
+    urgencyEditButtZone.setAttribute('id', 'urgencyEditButtZone');
+
+    const urgencyEditButton = document.createElement('IMG');
+    urgencyEditButton.src = EditIcon;
+    urgencyEditButton.setAttribute('class', 'displayTask_EditButton')
+    urgencyEditButton.setAttribute('id', 'urgencyEditButton')
+    urgencyEditButton.style.width = '25px';
+    urgencyEditButton.style.height = '25px';
+    urgencyEditButton.style.cursor = 'pointer';
+
+    urgencyEditButtZone.appendChild(urgencyEditButton)
+
+    //submit and cancel Button 
+    const urgencySubmit = document.createElement('IMG');
+    urgencySubmit.src = SubmitIcon;
+    urgencySubmit.innerHTML = 'Submit';
+    urgencySubmit.setAttribute('class', 'displayTask_button')
+    urgencySubmit.setAttribute('id', 'urgencySubmit')
+
+    //cancel button
+    const urgencyCancelButton = document.createElement('IMG');
+    urgencyCancelButton.src = CancelIcon;
+    urgencyCancelButton.innerHTML = 'Cancel';
+    urgencyCancelButton.setAttribute('class', 'displayTask_button')
+    urgencyCancelButton.setAttribute('id', 'urgencyCancelButton');
+    urgencyEditButtZone.appendChild(urgencySubmit);
+    urgencyEditButtZone.appendChild(urgencyCancelButton);
+
+    //append elements 
+    urgencyZone.appendChild(urgencySubZone)
+    urgencySubZone.appendChild(urgency)
+    urgencySubZone.appendChild(urgencyInput)
+    urgencyZone.appendChild(urgencyEditButtZone)
+
+    //Add functionality to buttons
+    urgencyEditButton.addEventListener('click', () => {
+        toggleUrgencyEdit();
+        urgencyInput.value = taskInfo.urgency;
+    });
+
+    urgencySubmit.addEventListener('click', () => {
+        urgency.innerHTML = urgencyInput.value;
+        editUrgency(ID)
+        toggleUrgencyEdit();
+    })
+    urgencyCancelButton.addEventListener('click', toggleUrgencyEdit);
+
+    //end of rendering urgency
 
     const container2_div2 = document.createElement('div');
     container2_div2.setAttribute('class', 'displayTask_subCont')
@@ -230,11 +454,17 @@ export const renderTaskPanel = async (ProjTitle, ID) => {
     dateCreatedTitle.innerHTML = 'Date Created';
     const dateCreated = document.createElement('p');
     dateCreated.setAttribute('id', 'displayTask_dateCreated');
+
+    container2_div1.appendChild(urgencyTitle);
+    container2_div1.appendChild(urgencyZone);
+
     container2_div2.appendChild(dateCreatedTitle);
     container2_div2.appendChild(dateCreated);
 
     container2.appendChild(container2_div1);
     container2.appendChild(container2_div2);
+
+
     element.appendChild(container2)
 
     //Div for the butons

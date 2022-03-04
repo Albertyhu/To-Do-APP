@@ -57,6 +57,7 @@ display: none;
     border: 1px solid #000000;
     width: 90%;
     height: 100vh;
+    min-height: 650px;
     display: flex; 
     align-items: center;
 }
@@ -158,8 +159,8 @@ display: none;
     position: absolute;
     display: none;
     z-index: 1;
-    width: 60%;
-    height: 60%;
+    min-width: 600px;
+    min-height: 60%;
     background-color: #ebebeb;
     border-radius: 10px;
 }
@@ -273,7 +274,8 @@ display: none;
     position: absolute;
     display: none;
     z-index: 1;
-    width: 60%;
+    min-width: 900px;
+    min-height: 700px;
     background-color: #ebebeb;
     border-radius: 10px;
 }
@@ -445,7 +447,8 @@ padding-right: 5px;
     position: absolute;
     display: none;
     z-index: 1;
-    width: 60%;
+    min-width: 800px;
+    min-height: 550px;
     background-color: #ebebeb;
     border-radius: 10px;
 }
@@ -470,49 +473,41 @@ padding-right: 5px;
 
 /*universal*/
 .SubZone {
-    min-width:60%;
+  /*  min-width:55%;*/
 }
 
 #statusSubZone {
     display: inline-block;
-    text-align: right;
+    text-align: center;
+}
+
+#descriptionSubZone {
+    display: inline-block;
 }
 
 .displayTask_editInput {
     width: 50%;
-   /* position: absolute; */
+    /* position: absolute; */
     height: 30px;
- 
-}
-
-#EditButtZone {
-    display: inline-block;
-    width: 25%;
-    margin-left: 10px;
-    justify-content: space-between; 
-    margin-top: auto;
-    margin-bottom: auto;
-}
-
-#displayTask_statusInput {
-    display: none;
-    position: inherit;
-    max-width: 150px;
 }
 /*styling for the edit button*/
-#statusEditButton {
-    max-width: 100%;
-    max-height: 100%;
-    cursor: pointer;
+#EditButtZone {
+    display: inline-block;
+  /*  width: 25%; */
+    margin-left: 10px;
+    justify-content: center;
+    margin-top: auto;
+    margin-bottom: auto;
+    vertical-align: middle;
 }
 
 .displayTask_button {
-    display: none; 
-    width: 25px; 
+    display: none;
+    width: 25px;
     height: 25px;
-    cursor: pointer; 
+    cursor: pointer;
     border: 1px solid #000000;
-    border-radius: 5px; 
+    border-radius: 5px;
     margin-left: 5px;
     margin-right: 5px;
     margin-top: auto;
@@ -529,4 +524,89 @@ padding-right: 5px;
 
 .displayTask_subCont {
     min-width: 350px;
+}
+
+/*status ui of display task panel*/
+#displayTask_statusInput {
+    display: none;
+    position: inherit;
+    max-width: 150px;
+    min-width: 96%;
+}
+
+#statusEditButton, .displayTask_EditButton {
+    max-width: 100%;
+    max-height: 100%;
+    cursor: pointer;
+}
+
+/*description part of the display task panel*/
+
+#displayTask_descriptionInput {
+    display: none;
+    position: inherit;
+    width: 100%;
+}
+#DescriptionEditButtZone {
+    display: inline-block;
+    justify-content: center;
+    margin-top: auto;
+    margin-bottom: auto;
+    vertical-align: middle;
+    margin-left: 5px;
+}
+
+#description_container h4 {
+    display: block;
+    margin-top: 20px;
+    margin-bottom: 0px;
+}
+
+/*deadline UI*/
+
+#displayTask_deadlineInput {
+    display: none;
+    position: inherit;
+    max-width: 150px;
+}
+
+#deadlineEditButtZone {
+    display: inline-block;
+    justify-content: center;
+    margin-top: auto;
+    margin-bottom: auto;
+    vertical-align: middle;
+    margin-left: 5px;
+}
+
+#deadlineSubZone {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/*urgency UI*/
+
+#displayTask_urgencyInput {
+    display: none;
+    position: inherit;
+    max-width: 150px;
+    height: 30px;
+}
+
+#urgencyEditButtZone {
+    display: inline-block;
+    justify-content: center;
+    margin-top: auto;
+    margin-bottom: auto;
+    vertical-align: middle;
+    margin-left: 5px;
+}
+
+#urgencySubZone {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+#displayTask_dateCreated {
+    display: inline-block;
 }

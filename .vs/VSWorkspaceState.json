@@ -7,9 +7,8 @@
     "\\src\\components",
     "\\src\\member",
     "\\src\\member\\display",
-    "\\src\\member\\display\\displayTask",
-    "\\src\\nonmember"
+    "\\src\\member\\display\\displayTask"
   ],
-  "SelectedNode": "\\src\\member\\display\\displayTask\\renderTaskPanel.js",
+  "SelectedNode": "\\src\\mystyle.css",
   "PreviewInSolutionExplorer": false
 }

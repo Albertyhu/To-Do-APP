@@ -226,7 +226,7 @@ export const handleAddTask = async () => {
 
             await setDoc(doc(db, 'task', auth.currentUser.uid, 'TaskList', codeID), docData)
                 .then(snap => {
-                    addTaskToProjectDisplay(taskInfo.projectID, codeID, taskInfo.title); 
+                    addTaskToProjectDisplay(taskInfo.projectID, codeID, taskInfo.title, taskInfo.description, taskInfo.urgency, taskInfo.status, taskInfo.deadline, taskInfo.dateCreated, taskInfo.isFinished); 
                     closeWindow = true;
                  })
                 .catch((error) => {
@@ -386,6 +386,7 @@ export const handleSecondaryAddTask = async (ProjectID) => {
             SecondaryTaskInfo.status = statusOptions[document.getElementById('addTask_status-SEC').value];
             SecondaryTaskInfo.projectID = ProjectID;
             SecondaryTaskInfo.urgency = urgency[document.getElementById('addTask_urgency-SEC').value];
+            const currentTime = Timestamp.now();
             const codeID = generateCode(20);
             const docData = {
                 title: SecondaryTaskInfo.title,
@@ -394,12 +395,12 @@ export const handleSecondaryAddTask = async (ProjectID) => {
                 status: SecondaryTaskInfo.status,
                 urgency: SecondaryTaskInfo.urgency,
                 deadline: Timestamp.fromDate(deadline_date),
-                dateCreated: Timestamp.now(),
+                dateCreated: currentTime,
                 isFinished: false,
             }
             await setDoc(doc(db, 'task', auth.currentUser.uid, 'TaskList', codeID), docData)
                 .then(snap => {
-                    addTaskToProjectDisplay(SecondaryTaskInfo.projectID, codeID, SecondaryTaskInfo.title);
+                    addTaskToProjectDisplay(SecondaryTaskInfo.projectID, codeID, SecondaryTaskInfo.title, SecondaryTaskInfo.description, SecondaryTaskInfo.urgency, SecondaryTaskInfo.status, Timestamp.fromDate(deadline_date), currentTime, false );
                     closeWindow = true;
                 })
                 .catch((error) => {
