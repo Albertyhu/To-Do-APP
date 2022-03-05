@@ -93,28 +93,15 @@ export const handleAddProject = async () => {
     var closeWindow = true; 
     if (projectInfo.title) {
         const deadline_date = new Date(projectInfo.deadline);
-        if (Timestamp.fromDate(deadline_date) >= Timestamp.now()) {
+        const UTCTime = new Date(deadline_date.getUTCFullYear(), deadline_date.getUTCMonth(), deadline_date.getUTCDate(), deadline_date.getUTCHours(), deadline_date.getUTCMinutes(), deadline_date.getUTCSeconds()); 
+        const currentTime = new Date(Date.now())
+        if (UTCTime >= currentTime || UTCTime.toLocaleDateString() >= currentTime.toLocaleDateString()) {
             let repeat = false;
             var codeID = generateCode(20); 
-            //too slow
-            /*
-            const projectList = await getProjectList(); 
-            do {
-                codeID = 
-                projectList.forEach(doc => {
-                    if (codeID === doc) {
-                        repeat = true;
-                    }
-                    else {
-                        repeat = false; 
-                    }
-                })
-            } while (repeat);
-           */
             await setDoc(doc(db, 'project', auth.currentUser.uid, 'ProjectList', codeID), {
                 title: projectInfo.title,
                 status: projectInfo.status,
-                deadline: Timestamp.fromDate(deadline_date),
+                deadline: Timestamp.fromDate(UTCTime),
             }).then(snap => {
                 addProjectToProjectDisplay(projectInfo.title, codeID);
                 addProjectToSelection(projectInfo.title, codeID);

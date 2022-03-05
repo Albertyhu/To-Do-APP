@@ -284,3 +284,9 @@ export const deleteTask = async (TaskID) => {
     }
     close_DisplayTask(); 
 }
+
+//removes the project node after a project gets deleted 
+export const removeProj = async (ProjectID) => {
+    const projContainer = await document.getElementById(ProjectID).parentNode; 
+    projContainer.parentNode.remove();
+}

@@ -30,10 +30,6 @@ var taskInfo = {
 }
 
 export const fillTaskInfo = (title, description, urgency, deadline, status, dateCreated, projectID, ID, taskIsDone) => {
-    console.log('deadline= ' + deadline)
-    console.log('urgency= ' + urgency)
-    console.log('date created= ' + dateCreated);
-
     taskInfo.title = title;
     taskInfo.description = description;
     taskInfo.urgency = urgency;

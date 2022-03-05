@@ -1,7 +1,7 @@
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { getFirestore, doc, setDoc, collection, query, where, Timestamp, getDoc, getDocs, deleteDoc, orderBy, onSnapshot, updateDoc} from "firebase/firestore";
 import { db } from './initializeFirebase.js';
-import { renderProjects } from './member/display/displayProject.js'; 
+import { renderProjects, removeProj  } from './member/display/displayProject.js'; 
 
 const auth = getAuth();
 export const returnAuth = () => {
@@ -105,18 +105,14 @@ export const delProject = async (ID) => {
         })
     taskList.forEach(async item => {
         await deleteDoc(doc(db, 'task', auth.currentUser.uid, 'TaskList', item)
-            .catch(e => {
-                console.log(e.code + ": " + e.message)
-            })
         )
     })
 
     await deleteDoc(doc(db, 'project', auth.currentUser.uid, 'ProjectList', ID)).then(async data => {
-       // location.reload();
+        //location.reload();
+        removeProj(ID);
     })
-        .catch(e => {
-            console.log(e.code + ": " + e.message); 
-        })
+
 }
 
 export const toggleCheckBox = async (taskID, boolValue) => {

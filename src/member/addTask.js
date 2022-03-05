@@ -207,7 +207,12 @@ export const handleAddTask = async () => {
     if (taskInfo.title != '') {
         taskInfo.deadline = document.getElementById('task_deadlineInput').value;
         const deadline_date = new Date(taskInfo.deadline);
-        if (Timestamp.fromDate(deadline_date) >= Timestamp.now()) {
+        const currentTime = new Date(Date.now()); 
+        const UTCTime = new Date(deadline_date.getUTCFullYear(), deadline_date.getUTCMonth(), deadline_date.getUTCDate(), deadline_date.getUTCHours(), deadline_date.getUTCMinutes(), deadline_date.getUTCSeconds()); 
+        console.log('Chosen Time = ' + UTCTime)
+        console.log('currentTime = ' + currentTime)
+        console.log(UTCTime >= currentTime)
+        if (UTCTime >= currentTime || UTCTime.toLocaleDateString() >= currentTime.toLocaleDateString()) {
             taskInfo.description = document.getElementById('addTask_description').value;
             taskInfo.status = statusOptions[document.getElementById('addTask_status').value];
             taskInfo.projectID = document.getElementById('AddTask_ProjectCategory_Selection').value;
@@ -219,14 +224,14 @@ export const handleAddTask = async () => {
                 description: taskInfo.description,
                 status: taskInfo.status,
                 urgency: taskInfo.urgency,
-                deadline: Timestamp.fromDate(deadline_date),
-                dateCreated: Timestamp.now(),
+                deadline: Timestamp.fromDate(UTCTime),
+                dateCreated: Timestamp.fromDate(currentTime),
                 isFinished: false, 
             }
 
             await setDoc(doc(db, 'task', auth.currentUser.uid, 'TaskList', codeID), docData)
                 .then(snap => {
-                    addTaskToProjectDisplay(taskInfo.projectID, codeID, taskInfo.title, taskInfo.description, taskInfo.urgency, taskInfo.status, taskInfo.deadline, taskInfo.dateCreated, taskInfo.isFinished); 
+                    addTaskToProjectDisplay(taskInfo.projectID, codeID, taskInfo.title, taskInfo.description, taskInfo.urgency, taskInfo.status, Timestamp.fromDate(UTCTime), Timestamp.fromDate(currentTime), taskInfo.isFinished); 
                     closeWindow = true;
                  })
                 .catch((error) => {
@@ -381,12 +386,13 @@ export const handleSecondaryAddTask = async (ProjectID) => {
     if (SecondaryTaskInfo.title != '') {
         SecondaryTaskInfo.deadline = document.getElementById('task_deadlineInput-SEC').value;
         const deadline_date = new Date(SecondaryTaskInfo.deadline);
-        if (Timestamp.fromDate(deadline_date) >= Timestamp.now()) {
+        const UTCTime = new Date(deadline_date.getUTCFullYear(), deadline_date.getUTCMonth(), deadline_date.getUTCDate(), deadline_date.getUTCHours(), deadline_date.getUTCMinutes(), deadline_date.getUTCSeconds()); 
+        const currentTime = new Date(Date.now()); 
+        if (UTCTime >= currentTime || UTCTime.toLocaleDateString() >= currentTime.toLocaleDateString()) {
             SecondaryTaskInfo.description = document.getElementById('addTask_description-SEC').value;
             SecondaryTaskInfo.status = statusOptions[document.getElementById('addTask_status-SEC').value];
             SecondaryTaskInfo.projectID = ProjectID;
             SecondaryTaskInfo.urgency = urgency[document.getElementById('addTask_urgency-SEC').value];
-            const currentTime = Timestamp.now();
             const codeID = generateCode(20);
             const docData = {
                 title: SecondaryTaskInfo.title,
@@ -394,13 +400,13 @@ export const handleSecondaryAddTask = async (ProjectID) => {
                 description: SecondaryTaskInfo.description,
                 status: SecondaryTaskInfo.status,
                 urgency: SecondaryTaskInfo.urgency,
-                deadline: Timestamp.fromDate(deadline_date),
-                dateCreated: currentTime,
+                deadline: Timestamp.fromDate(UTCTime),
+                dateCreated: Timestamp.fromDate(currentTime),
                 isFinished: false,
             }
             await setDoc(doc(db, 'task', auth.currentUser.uid, 'TaskList', codeID), docData)
                 .then(snap => {
-                    addTaskToProjectDisplay(SecondaryTaskInfo.projectID, codeID, SecondaryTaskInfo.title, SecondaryTaskInfo.description, SecondaryTaskInfo.urgency, SecondaryTaskInfo.status, Timestamp.fromDate(deadline_date), currentTime, false );
+                    addTaskToProjectDisplay(SecondaryTaskInfo.projectID, codeID, SecondaryTaskInfo.title, SecondaryTaskInfo.description, SecondaryTaskInfo.urgency, SecondaryTaskInfo.status, Timestamp.fromDate(UTCTime), Timestamp.fromDate(currentTime), false );
                     closeWindow = true;
                 })
                 .catch((error) => {
